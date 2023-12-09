@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: docker_files/Dockerfile.postgres
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    build:
+      context: .
+      dockerfile: docker_files/Dockerfile.pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+  preprocess:
+    build:
+      context: .
+      dockerfile: docker_files/Dockerfile.preprocessing
+    depends_on:
+      - postgres
+
+  ml_model:
+    build:
+      context: .
+      dockerfile: docker_files/Dockerfile.mlmodel
+    depends_on:
+      postgres:
+        condition: service_started
+      preprocess:
+        condition: service_completed_successfully
+    volumes:
+      - ./models:/app/models
+
+  nn_model:
+    build:
+      context: .
+      dockerfile: docker_files/Dockerfile.nnmodel
+    depends_on:
+      postgres:
+        condition: service_started
+      preprocess:
+        condition: service_completed_successfully
+    volumes:
+      - ./models:/app/models

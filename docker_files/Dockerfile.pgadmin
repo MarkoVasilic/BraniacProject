@@ -1,0 +1,6 @@
+# Use the official pgAdmin image
+FROM dpage/pgadmin4:latest
+
+# Set environment variables
+ENV PGADMIN_DEFAULT_EMAIL=braniac@example.com
+ENV PGADMIN_DEFAULT_PASSWORD=braniac

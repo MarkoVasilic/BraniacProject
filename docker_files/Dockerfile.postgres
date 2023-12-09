@@ -1,0 +1,10 @@
+# Use the official PostgreSQL image
+FROM postgres:latest
+
+# Set environment variables
+ENV POSTGRES_DB=braniacDB
+ENV POSTGRES_USER=braniac
+ENV POSTGRES_PASSWORD=braniac
+
+# Copy the script to initialize the database
+COPY docker_files/init-db.sql /docker-entrypoint-initdb.d/
