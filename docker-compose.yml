@@ -21,6 +21,8 @@ services:
     build:
       context: .
       dockerfile: docker_files/Dockerfile.preprocessing
+    env_file:
+      - .env.docker
     depends_on:
       - postgres
 
@@ -28,22 +30,46 @@ services:
     build:
       context: .
       dockerfile: docker_files/Dockerfile.mlmodel
+    env_file:
+     - .env.docker
     depends_on:
       postgres:
         condition: service_started
       preprocess:
         condition: service_completed_successfully
     volumes:
-      - ./models:/app/models
+      - ./src/saved_models:/app/saved_models
 
   nn_model:
     build:
       context: .
       dockerfile: docker_files/Dockerfile.nnmodel
+    env_file:
+     - .env.docker
     depends_on:
       postgres:
         condition: service_started
       preprocess:
         condition: service_completed_successfully
     volumes:
-      - ./models:/app/models
+      - ./src/saved_models:/app/saved_models
+
+  fast_api:
+    build:
+      context: .
+      dockerfile: docker_files/Dockerfile.fastapi
+    env_file:
+     - .env.docker
+    depends_on:
+      postgres:
+        condition: service_started
+      preprocess:
+        condition: service_completed_successfully
+      ml_model:
+        condition: service_completed_successfully
+      nn_model:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src/saved_models:/app/saved_models

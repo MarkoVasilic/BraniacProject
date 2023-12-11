@@ -1,6 +1,3 @@
--- Create the braniac database
-CREATE DATABASE braniac;
-
 -- Connect to the braniac database
 \c braniac;
 

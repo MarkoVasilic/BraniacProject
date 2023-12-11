@@ -1,0 +1,19 @@
+# Use the official Python image as the base image
+FROM python:3.11.2-slim-buster
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy files to the working directory
+COPY /src /app
+COPY requirements.txt /app/requirements.txt
+COPY .env.docker .env
+
+# Install necessary Python packages
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
+
+# Expose the port that FastAPI will run on
+EXPOSE 8000
+
+# Command to run your FastAPI application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

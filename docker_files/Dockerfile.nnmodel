@@ -1,20 +1,16 @@
 # Use the official Python image
-FROM python:3.8.3-slim-buster
-
-# Set environment variables
-ENV POSTGRES_DB=braniacDB
-ENV POSTGRES_USER=braniac
-ENV POSTGRES_PASSWORD=braniac
+FROM python:3.11.2-slim-buster
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the machine learning model script and files
+# Copy the neural network model script and files
 COPY /src /app
 COPY requirements.txt /app/requirements.txt
+COPY .env.docker .env
 
 # Install necessary Python packages
-RUN pip install --trusted-host pypi.python.org -r requirements.txt tensorflow==2.13
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # Define the command to run your script
-CMD ["python", "nn_model.py"]
+CMD ["python", "nn_model_main.py"]

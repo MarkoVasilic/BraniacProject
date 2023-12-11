@@ -29,7 +29,6 @@ class FeatureExtractor:
                         feature_dict[sub_feat][0] + (df['vote_average'][index]),
                         feature_dict[sub_feat][1] + 1
                     )
-
         # Step 2: Calculate average ratings for each feature
         for key in feature_dict:
             feature_dict[key] = feature_dict[key][0] / feature_dict[key][1]
