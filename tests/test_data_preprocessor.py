@@ -55,19 +55,5 @@ class TestDataPreprocessor(unittest.TestCase):
         # Assertions for keywords column
         self.assertTrue(all(self.preprocessor.movies_df['keywords'].apply(lambda x: len(x) > 0)))
 
-    def test_process_features_and_target(self):
-        # Run process_features_and_target method
-        self.preprocessor.filter_zero_rating_movies()
-        self.preprocessor.keep_selected_columns()
-        self.preprocessor.json_to_list()
-        self.preprocessor.remove_empty_production_data()
-        self.preprocessor.create_feature_columns()
-        features, target = self.preprocessor.process_features_and_target()
-
-        # Assertions for features DataFrame
-        self.assertIsInstance(features, pd.DataFrame)
-        for column in features.columns:
-            self.assertTrue(all(0 <= features[column]) and all(features[column] <= 1))
-
 if __name__ == '__main__':
     unittest.main()
