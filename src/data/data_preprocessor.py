@@ -1,6 +1,6 @@
 from typing import Tuple, Optional, Dict
-import pandas as pd
 import json
+import pandas as pd
 from data.feature_extractor import FeatureExtractor
 import data.helper as helper
 
